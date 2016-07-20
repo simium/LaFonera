@@ -1,0 +1,44 @@
+1.
+mount a serial adapter to the fonera device
+(the serial adapter documentation can be found at http://wiki.openwrt.org/OpenWrtDocs/Hardware/Fon/Fonera)
+
+2.
+set your terminal client to 9600-8-N-1 
+
+3.
+enter the RedBoot console by pressing CTRL+C
+
+4.
+copy linux.bin to your tftp server directory
+
+5.
+configure the RedBoot bootloader IP and TFTP server settings using
+ip_address -l [local ip address] -h [remote server address]
+
+6.
+flash the unit by entering the following commands
+
+RedBoot> fis init
+About to initialize [format] FLASH image system - continue (y/n)? y
+*** Initialize FLASH Image System
+... Erase from 0xa83e0000-0xa83f0000: .
+... Program from 0x80ff0000-0x81000000 at 0xa83e0000: .
+
+load -r -v -b 0x80041000 linux.bin
+Using default protocol (TFTP)
+Raw file loaded 0x80041000-0x802e3fff, assumed entry at 0x80041000
+RedBoot> fis create linux
+... Erase from 0xa8030000-0xa82f0000: ............................................
+... Program from 0x80041000-0x80301000 at 0xa8030000: ............................................
+... Erase from 0xa83e0000-0xa83f0000: .
+... Program from 0x80ff0000-0x81000000 at 0xa83e0000: .
+
+fconfig
+enter the bootscript: 
+fis load -l linux
+exec
+
+save the config and do
+
+reset
+
